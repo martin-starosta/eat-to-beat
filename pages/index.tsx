@@ -1,11 +1,50 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '../styles/Home.module.css'
+import { useState, ChangeEvent, useEffect } from "react";
+import useAxios from "axios-hooks";
 
-const inter = Inter({ subsets: ['latin'] })
+import Head from "next/head";
+import {
+  Container,
+  Box,
+  Stack,
+  Flex,
+  Button,
+  Text,
+  VStack,
+  useBreakpointValue,
+  Heading,
+  Image,
+  FormControl,
+  Input,
+  HStack,
+} from "@chakra-ui/react";
+import { IBM_Plex_Mono, Dancing_Script } from "@next/font/google";
+import { ReactElement } from "react";
+import FullWidthLayout from "../components/Layout/FullWidthLayout";
+import Features from "../components/Features";
 
+const inter = IBM_Plex_Mono({ subsets: ["latin"], weight: "700" });
+const dancing = Dancing_Script({ subsets: ["latin"], weight: "700" });
 export default function Home() {
+  const [email, setEmail] = useState<string>("");
+
+  const [{ data, loading, error }, refetch] = useAxios(
+    {
+      url: "/api/emailSignup",
+      method: "POST",
+      data: { email },
+    },
+    {
+      manual: true,
+    }
+  );
+  useEffect(() => setEmail(""), []);
+
+  useEffect(() => {
+    if (data?.success === true && !loading) {
+      setEmail("");
+    }
+  }, [data?.success, loading]);
+
   return (
     <>
       <Head>
@@ -14,110 +53,123 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+      <Flex
+        w={"full"}
+        h={"100vh"}
+        backgroundImage={"url(eat2beat-hero.jpg)"}
+        backgroundSize={"cover"}
+        backgroundPosition={"center center"}
+      >
+        <VStack
+          w={"full"}
+          justify={"center"}
+          px={useBreakpointValue({ base: 4, md: 8 })}
+        >
+          <Stack
+            width={"950px"}
+            align={"flex-start"}
+            spacing={12}
+            backgroundColor="white"
+            backgroundImage={"url(plate.jpg)"}
+            backgroundSize={"cover"}
+            backgroundPosition={"center center"}
+            py={24}
+            px={12}
+            borderRadius={12}
+            boxShadow={"2xl"}
+            marginTop={12}
+          >
+            <Text
+              color={"black.900"}
+              fontWeight={700}
+              lineHeight={1.6}
+              fontSize={useBreakpointValue({ base: "3xl", md: "4xl" })}
+              className={inter.className}
             >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
+              Unlock Your
+              <br />
+              <Text color={"ms.900"}>Health Potential</Text>
+              With&nbsp;Personalized Diet
+            </Text>
+            <Stack direction={"row"}>
+              <Button>Show me more</Button>
+              <Button
+                bg={"whiteAlpha.300"}
+                rounded={"full"}
+                color={"black"}
+                _hover={{ bg: "whiteAlpha.500" }}
+                onClick={() => {
+                  const info = document.querySelector("#info");
+                  if (!info) return;
+                  info.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Read more
+              </Button>
+            </Stack>
+            <Box paddingTop={12}>
+              <Image src="Eat2beat-logos-WIP.svg" alt="Logo" height={16} />
+            </Box>
+          </Stack>
+        </VStack>
+      </Flex>
 
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+      <Container maxW={"6xl"} id="info">
+        <Features />
+        <Stack
+          as={VStack}
+          spacing={8}
+          alignItems={"center"}
+          justifyContent={"center"}
+          textAlign={"center"}
+          py={12}
+        >
+          <Heading>
+            Get your 7-day meal plan by subscribing to our newsletter!
+          </Heading>
+          <Text>
+            As a subscriber, you&apos;ll receive an example 7-day meal plan as
+            well as updates on our latest project updates and blog posts.
+            <br />
+            Don&apos;t miss out on the opportunity to improve your health and
+            reach your wellness goals.
+          </Text>
+          <HStack>
+            {data?.success === true && !loading ? (
+              <Text color={"ms.900"}>Thank you for subscribing.</Text>
+            ) : (
+              <>
+                <FormControl>
+                  <Input
+                    variant={"solid"}
+                    borderWidth={1}
+                    color={"gray.800"}
+                    _placeholder={{
+                      color: "gray.400",
+                    }}
+                    id={"email"}
+                    type={"email"}
+                    required
+                    placeholder={"Your Email"}
+                    aria-label={"Your Email"}
+                    value={email}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setEmail(e.target.value)
+                    }
+                  />
+                </FormControl>
+                <Button mx={4} onClick={() => refetch()} disabled={loading}>
+                  Sign up
+                </Button>
+              </>
+            )}
+          </HStack>
+        </Stack>
+      </Container>
     </>
-  )
+  );
 }
+
+Home.getLayout = function (page: ReactElement) {
+  return <FullWidthLayout>{page}</FullWidthLayout>;
+};

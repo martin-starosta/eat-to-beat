@@ -5,6 +5,8 @@ import z from "zod";
 const recipeSchema = z.object({
   name: z.string(),
   url: z.string().url(),
+  ingredients: z.string().optional(),
+  mealType: z.enum([MealType.BREAKFAST, MealType.LUNCH, MealType.DINNER]),
 });
 
 const prisma = new PrismaClient();
@@ -23,12 +25,13 @@ export default async function handler(
     return;
   }
 
-  const { name, url } = req.body;
+  const { name, url, ingredients, mealType } = req.body;
   const recipe = await prisma.recipe.create({
     data: {
       name,
       url,
-      mealType: MealType.BREAKFAST,
+      mealType,
+      ingredients,
     },
   });
 

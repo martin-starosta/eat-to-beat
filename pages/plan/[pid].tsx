@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { Heading } from "@chakra-ui/react";
+
 type MealPlan = {
   name: string;
   days: Day[];
@@ -41,15 +43,21 @@ const PlanPage = () => {
   return (
     <div className="grid grid-cols-main-layout gap-2">
       <div>
-        <h1 className="">{plan?.name}</h1>
+        <Heading as="h1" size="2xl">
+          {plan.name}
+        </Heading>
         {plan?.days?.map((day: Day, index: number) => {
           return (
             <div key={"day_" + index} className="pt-3 pb-2">
-              <h2 className="text-2xl">{`Day ${index + 1}`}</h2>
+              <Heading as="h2" size="xl">
+                {`Day ${index + 1}`}
+              </Heading>
               {day.meals.map((meal: Meal) => {
                 return (
                   <div key={`meal_${meal.id}`} className="mb-4">
-                    <h3 className="mt-2 mb-1">{meal.mealType}</h3>
+                    <Heading as="h3" size="lg">
+                      {meal.mealType}
+                    </Heading>
                     <ul className="list-disc ml-3">
                       <li>
                         1 serving{" "}

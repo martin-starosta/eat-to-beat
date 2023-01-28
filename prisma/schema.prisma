@@ -11,10 +11,11 @@ datasource db {
 }
 
 model Recipe {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  mealType MealType
-  url      String?
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  mealType    MealType
+  url         String?
+  ingredients String?
 }
 
 model MealPlan {
