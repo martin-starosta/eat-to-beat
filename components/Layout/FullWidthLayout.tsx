@@ -1,5 +1,6 @@
 import React from "react";
 import { NavBar } from "./NavBar";
+import Footer from "./Footer";
 export default function FullWidthLayout({
   children,
 }: {
@@ -8,8 +9,8 @@ export default function FullWidthLayout({
   return (
     <>
       <NavBar />
-      <main>{children}</main>
-      <footer>Footer</footer>
+      <main className='content'>{children}</main>
+      <Footer />
     </>
   );
 }
